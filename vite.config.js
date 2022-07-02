@@ -41,4 +41,16 @@ export default defineConfig({
       },
     },
   },
+  server: {
+    port: "8080",
+    proxy: {
+      "/api": {
+        target: "http://jsonplaceholder.typicode.com",
+        changeOrigin: true,
+        configure: (proxy, options) => {
+          // proxy 是 'http-proxy' 的实例
+        },
+      },
+    },
+  },
 });

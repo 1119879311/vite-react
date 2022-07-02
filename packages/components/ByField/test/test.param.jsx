@@ -1,4 +1,4 @@
-import { Checkbox, Input } from "antd";
+import { Checkbox, Input, Button } from "antd";
 
 export const paramList1 = [
   {
@@ -19,5 +19,13 @@ export const paramList1 = [
     formItemParam: {
       valuePropName: "checked",
     },
+  },
+  {
+    depIds: ["checkbox1"],
+    shouldUpdate: (form, val) => {
+      console.log("---", val);
+      return val?.checkbox1 ? { disabled: true, loading: true } : {};
+    },
+    children: <Button>提交</Button>,
   },
 ];

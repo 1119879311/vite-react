@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Form, Button, Input } from "antd";
+import { Form, Button, Input, Checkbox } from "antd";
 import ByForm from "../index";
 import testParam, { GroupFormOptions, flatFormOtions } from "./param";
 function TestForm(props) {
@@ -18,18 +18,35 @@ function TestForm(props) {
   };
   return (
     <div style={{ width: "80%", margin: "0 auto" }}>
-      <Button onClick={submit}>获取</Button>
+      <Button onClick={submit}>获取1212</Button>
       <hr />
-      <Form form={form} name="form-ref">
-        <Form.Item
-          name="nameSs"
-          initialValue={123456}
-          label="User Name"
-          rules={[{ required: true }]}
-        >
+      <Form
+        form={form}
+        name="form-ref"
+        // layout="vertical"
+        initialValues={{
+          nameSs: "1111",
+          "row-1": 121212,
+          checkbox1: true,
+          upload: [
+            {
+              uid: "12",
+              status: "done",
+              url: "http://localhost:3000/theme/upload/images/2022/imgmodule2022-06-30bmuuGCu4-5ec78cfc32a6e.jpg",
+            },
+          ],
+        }}
+      >
+        <Form.Item name="nameSs" label="User Name" rules={[{ required: true }]}>
           <Input></Input>
         </Form.Item>
-
+        <Form.Item
+          label="Form disabled"
+          name="disabled"
+          valuePropName="checked"
+        >
+          <Checkbox>disabled</Checkbox>
+        </Form.Item>
         <Form.Item
           noStyle
           shouldUpdate={(prevValues, currentValues) => {

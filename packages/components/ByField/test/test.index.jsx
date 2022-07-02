@@ -18,14 +18,19 @@ const TestInput = (props) => {
         console.log("err", err);
       });
   };
-  const setVaule = () => {};
-
+  const setVaule = () => {
+    form.setFieldsValue({ str1: Math.random(), checkbox1: true, vals: 111 });
+  };
+  const clearvalue = () => {
+    form.resetFields();
+  };
   return (
     <div>
       <Button onClick={submit}>获取</Button>
       <Button onClick={setVaule}>设置值</Button>
+      <Button onClick={clearvalue}>清空值</Button>
 
-      <Form form={form} name="control-ref" ref={formRef}>
+      <Form form={form} name="control-ref" ref={formRef} initialValues={{}}>
         {paramList1.map((param, i) => (
           <ByField key={i} form={form} {...param}></ByField>
         ))}

@@ -3,32 +3,42 @@ import { Row, Col } from "antd";
 import ByInput from "../../ByInput";
 import { TramfromGroupFormFieldList } from "./uilt";
 import { debounce, deepMerge, pick, get } from "../../../utils";
+import "./index.css";
+
+function NoFormItemChildren({ children: Child }) {
+  return Child;
+}
 
 /**
  *  渲染一列
  */
 const RenderSingleCol = (props) => {
   let { colParam, fieldParam, onFormChange, form } = props;
-  // let { hidden } = fieldParam;
+  let { noFormItem = false, ...fieldProps } = fieldParam;
+
   let className = [
     "by-form-col-itme",
     colParam.className || "",
-    fieldParam.hidden && "by-form-col-hidden",
+    fieldProps.hidden && "by-form-col-hidden",
   ]
     .filter(Boolean)
     .join(" ");
   return (
     <Col {...colParam} className={className}>
-      <ByInput
-        form={form}
-        {...fieldParam}
-        fieldChange={debounce((...args) => {
-          typeof fieldParam.fieldChange === "function" &&
-            fieldParam.fieldChange(...args);
-          typeof onFormChange === "function" &&
-            onFormChange(...args, form && form.getFieldsValue());
-        }, 16.67)}
-      ></ByInput>
+      {noFormItem ? (
+        <NoFormItemChildren {...fieldProps}></NoFormItemChildren>
+      ) : (
+        <ByInput
+          form={form}
+          {...fieldProps}
+          fieldChange={debounce((...args) => {
+            typeof fieldProps.fieldChange === "function" &&
+              fieldProps.fieldChange(...args);
+            typeof onFormChange === "function" &&
+              onFormChange(...args, form && form?.getFieldsValue());
+          }, 16.67)}
+        ></ByInput>
+      )}
     </Col>
   );
 };

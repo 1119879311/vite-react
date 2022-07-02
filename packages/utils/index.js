@@ -136,3 +136,16 @@ export function deepMergeList(...args) {
     {}
   );
 }
+
+export const isType = (val, type) => {
+  return typeof val === type;
+};
+
+export const isFun = (val) => isType(val, "function");
+export const isString = (val) => isType(val, "string");
+export const isNumber = (val) => isType(val, "number");
+export const isBool = (val) => isType(val, "boolean");
+export const isNull = (val) => isType(val, "object") && val === null;
+export const isArray = (val) => Array.isArray(val);
+export const isObj = (val) =>
+  isType(val, "object") && !isArray(val) && val !== null;
