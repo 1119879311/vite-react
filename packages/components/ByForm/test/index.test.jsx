@@ -3,10 +3,17 @@ import React from "react";
 import { Form, Button, Input, Checkbox } from "antd";
 import ByForm from "../index";
 import testParam, { GroupFormOptions, flatFormOtions } from "./param";
+import { useRef } from "react";
 function TestForm(props) {
   const [form] = Form.useForm();
+  const formRef = useRef(null);
   const submit = () => {
-    console.log("getFieldsValue:", form.getFieldsValue());
+    console.log(
+      "getFieldsValue:",
+      formRef.current,
+      formRef.current == form,
+      form.getFieldsValue()
+    );
     form
       .validateFields()
       .then((value) => {
@@ -16,19 +23,34 @@ function TestForm(props) {
         console.log("err", err);
       });
   };
+
+  const setVaule = () => {
+    form.setFieldsValue({
+      nameSs: Math.random(),
+      upload2: [],
+      checkbox1: false,
+    });
+  };
+  const clearvalue = () => {
+    form.resetFields();
+  };
   return (
     <div style={{ width: "80%", margin: "0 auto" }}>
-      <Button onClick={submit}>获取1212</Button>
+      {/* <Button onClick={submit}>获取1212</Button> */}
+      <Button onClick={submit}>获取</Button>
+      <Button onClick={setVaule}>设置值</Button>
+      <Button onClick={clearvalue}>清空值</Button>
       <hr />
       <Form
         form={form}
+        ref={formRef}
         name="form-ref"
         // layout="vertical"
         initialValues={{
           nameSs: "1111",
           "row-1": 121212,
           checkbox1: true,
-          upload: [
+          upload2: [
             {
               uid: "12",
               status: "done",

@@ -44,11 +44,27 @@ export default defineConfig({
   server: {
     port: "8080",
     proxy: {
+      // "/api": {
+      //   target: "http://jsonplaceholder.typicode.com",
+      //   changeOrigin: true,
+      //   configure: (proxy, options) => {
+      //     // proxy 是 'http-proxy' 的实例
+      //   },
+      // },
       "/api": {
-        target: "http://jsonplaceholder.typicode.com",
+        // target: "http://baidu.com",
+        target: "http://localhost:3001",
         changeOrigin: true,
-        configure: (proxy, options) => {
-          // proxy 是 'http-proxy' 的实例
+        pathRewrite: {
+          "^/api": "/api",
+        },
+      },
+      "/theme": {
+        // target: "http://baidu.com",
+        target: "http://localhost:3001",
+        changeOrigin: true,
+        pathRewrite: {
+          "^/theme": "/theme",
         },
       },
     },

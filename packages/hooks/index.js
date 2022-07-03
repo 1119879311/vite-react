@@ -1,3 +1,3 @@
-import useRequestPro from "./useRequest";
+import useRequestPro, { configRequest, getAjax } from "./useRequest";
 
-export { useRequestPro };
+export { useRequestPro, configRequest, getAjax };

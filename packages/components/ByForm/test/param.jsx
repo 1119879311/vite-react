@@ -1,10 +1,12 @@
 /* eslint-disable import/no-anonymous-default-export */
 import { Checkbox, Button, Upload, message } from "antd";
+// import { PlusOutlined, ExclamationCircleTwoTone } from "@ant-design/icons";
 import {
   LoadingOutlined,
   PlusOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
+import ByUpload from "../../ByInput/ByUpload";
 function getFieldList(count = 10, prex = "", layout = false) {
   let result = [];
   for (let index = 0; index < count; index++) {
@@ -187,6 +189,24 @@ export const flatFormOtions = {
       // hidden: true,
     },
     {
+      id: "upload2",
+      name: "files",
+      action: "/api/upload",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("APP_TOKEN"),
+      },
+      data: { type: "imgmodule" },
+      // maxCount: 0,
+      // limtSize: 0.01,
+      listType: "picture-card",
+      multiple: true,
+      children: (
+        <ByUpload>
+          <PlusOutlined />
+        </ByUpload>
+      ),
+    },
+    {
       id: "upload",
       formItemParam: {
         valuePropName: "fileList",
@@ -202,7 +222,34 @@ export const flatFormOtions = {
         },
       },
       children: (
-        <Upload name="logo" action="/upload.do" listType="picture">
+        <Upload
+          name="files"
+          action="/api/upload"
+          multiple
+          headers={{
+            Authorization: "Bearer " + localStorage.getItem("APP_TOKEN"),
+          }}
+          // beforeUpload={(file) => {
+          //   const isJpgOrPng = (file.type === file.type) === "image/png";
+          //   console.log("--beforeUpload--", !isJpgOrPng, file);
+          //   if (!isJpgOrPng) {
+          //     message.error("You can only upload JPG/PNG file!");
+          //   }
+          //   const isLt2M = file.size / 1024 / 1024 < 2;
+          //   if (!isLt2M) {
+          //     message.error("Image must smaller than 2MB!");
+          //   }
+          //   console.log("Upload.LIST_IGNORE", Upload.LIST_IGNORE);
+          //   return isJpgOrPng && isLt2M; //|| Upload.LIST_IGNORE;
+          //   // return false;
+          // }}
+          onChange={(info) => {
+            console.log("--UploadonChange--", info);
+            return false;
+          }}
+          data={{ type: "imgmodule" }}
+          listType="picture"
+        >
           <Button icon={<UploadOutlined />}>Click to upload</Button>
         </Upload>
       ),
