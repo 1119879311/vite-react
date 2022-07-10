@@ -4,6 +4,18 @@ import { resolve } from "path";
 
 export default defineConfig({
   plugins: [react()],
+  css: {
+    preprocessorOptions: {
+      less: {
+        modifyVars: {
+          hack: `true; @import (reference) "${resolve(
+            "packages/assets/vars.less"
+          )}";`,
+        },
+        javascriptEnabled: true,
+      },
+    },
+  },
   build: {
     lib: {
       entry: resolve(__dirname, "packages/components/index.jsx"),

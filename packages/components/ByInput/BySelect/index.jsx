@@ -1,4 +1,22 @@
-import { ByFieldHoc } from "../../ByField";
-import BySelect from "./src";
+// import { ByFieldHoc } from "../../ByField";
+import BySelect from "./src/BySelect";
+/**
+ * 类型约束
+ */
+BySelect.propTypes = {};
 
-export default ByFieldHoc(BySelect);
+/**
+ * 默认值
+ */
+BySelect.defaultProps = {};
+// BySelect.defaultProps = {
+//   fieldMapValue: "value",
+//   fieldMapLabel: "label",
+// };
+
+/**
+ * 接入表单的参数 getFieldDecorator
+ */
+BySelect.FormFieldDecorator = {};
+
+export default BySelect;

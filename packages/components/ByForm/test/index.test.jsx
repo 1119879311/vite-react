@@ -1,12 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { Form, Button, Input, Checkbox } from "antd";
 import ByForm from "../index";
 import testParam, { GroupFormOptions, flatFormOtions } from "./param";
 import { useRef } from "react";
+
+const ByText = (props) => {
+  console.log("props", props);
+  return <div>{props.value}</div>;
+};
 function TestForm(props) {
   const [form] = Form.useForm();
   const formRef = useRef(null);
+  const [isEdit, setIsEdit] = useState(false);
   const submit = () => {
     console.log(
       "getFieldsValue:",
@@ -37,13 +43,17 @@ function TestForm(props) {
   return (
     <div style={{ width: "80%", margin: "0 auto" }}>
       {/* <Button onClick={submit}>获取1212</Button> */}
+      <Button onClick={() => setIsEdit(!isEdit)}>
+        {isEdit ? "预览" : "编辑"}
+      </Button>
+
       <Button onClick={submit}>获取</Button>
+
       <Button onClick={setVaule}>设置值</Button>
       <Button onClick={clearvalue}>清空值</Button>
       <hr />
       <Form
         form={form}
-        ref={formRef}
         name="form-ref"
         // layout="vertical"
         initialValues={{
@@ -60,7 +70,9 @@ function TestForm(props) {
         }}
       >
         <Form.Item name="nameSs" label="User Name" rules={[{ required: true }]}>
-          <Input></Input>
+          {isEdit ? <Input></Input> : <ByText></ByText>}
+          {/* {(props) => <div>{props.value}</div>} */}
+          {/* <Input></Input> */}
         </Form.Item>
         <Form.Item
           label="Form disabled"
@@ -90,18 +102,17 @@ function TestForm(props) {
             ) : null;
           }}
         </Form.Item>
-
-        <br />
-
-        <ByForm form={form} config={testParam}></ByForm>
-        <br />
-        <br />
-        <hr></hr>
-        <ByForm form={form} config={GroupFormOptions}></ByForm>
-
-        <hr></hr>
-        <ByForm form={form} config={flatFormOtions}></ByForm>
       </Form>
+      <br />
+
+      <ByForm ref={formRef} form={form} config={testParam}></ByForm>
+      <br />
+      <br />
+      <hr></hr>
+      <ByForm form={form} config={GroupFormOptions}></ByForm>
+
+      <hr></hr>
+      <ByForm form={form} config={flatFormOtions}></ByForm>
     </div>
   );
 }

@@ -54,6 +54,7 @@ export function TramfromGroupFormFieldList(fieldList, FieldListParams = []) {
         ) || []
       );
     }
+
     return result;
   }
   return [];

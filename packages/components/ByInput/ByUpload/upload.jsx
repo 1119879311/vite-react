@@ -44,7 +44,6 @@ const ByUpload = forwardRef(
         setFileList(newFileList || []);
         isFun(onChange) && onChange(newFileList);
         isFun(uploadChange) && uploadChange(info);
-        console.log("newFileList", newFileList);
       },
       beforeUpload: (file) => {
         let { accept, maxCount = 0 } = baseProps;

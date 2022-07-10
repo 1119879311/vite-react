@@ -1,5 +1,7 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { Checkbox, Button, Upload, message } from "antd";
+import { Checkbox, Button, Upload, message, Input, Form } from "antd";
+import Addlist from "./add.text";
+import React from "react";
 // import { PlusOutlined, ExclamationCircleTwoTone } from "@ant-design/icons";
 import {
   LoadingOutlined,
@@ -7,6 +9,13 @@ import {
   UploadOutlined,
 } from "@ant-design/icons";
 import ByUpload from "../../ByInput/ByUpload";
+import { isObj } from "../../../utils";
+
+console.log(
+  "--------React.isValidElement",
+  isObj(Input),
+  React.isValidElement(<Input />)
+);
 function getFieldList(count = 10, prex = "", layout = false) {
   let result = [];
   for (let index = 0; index < count; index++) {
@@ -27,7 +36,7 @@ function getFieldList(count = 10, prex = "", layout = false) {
       rules: [{ required: true }],
       labelAfterDes: "?",
       labelBeforeDes: "!",
-      labelWidth: "",
+      // labelWidth: "",
 
       // colParam: { style: { width: "240px" } },
     });
@@ -47,8 +56,8 @@ const formOptions = (groupId = "") => ({
   onFormChange: (...arg) => {
     console.log("onFormChage-formList", ...arg);
   },
-  deserialization: {},
-  panelParam: {},
+  // deserialization: {},
+  // panelParam: {},
   // rowParam: { gutter: [40] },
   // colParam: { style: { width: "240px" } },
   // colParam: { style: { width: "20%" } },
@@ -87,8 +96,6 @@ export const flatFormOtions = {
   onFormChange: (...args) => {
     console.log("onFormChage-FieldList", ...args);
   },
-  deserialization: {},
-  panelParam: { title: "" }, //
   // rowParam: { gutter: [40] },
   // colParam: { style: { width: "240px" } },
   colParam: { span: 24 },
@@ -198,7 +205,8 @@ export const flatFormOtions = {
       data: { type: "imgmodule" },
       // maxCount: 0,
       // limtSize: 0.01,
-      listType: "picture-card",
+      // listType: "picture-card",
+      listType: "picture",
       multiple: true,
       children: (
         <ByUpload>
@@ -273,6 +281,30 @@ export const flatFormOtions = {
       children: <Button>提交</Button>,
       belong: { group: 1, row: 1 },
       layout: "vertical",
+    },
+    {
+      id: "add",
+      label: "自增",
+      // noInsertForm: true,
+      // noFormItem: true,
+      // formItemParam: { noStyle: true },
+      inputType: "ByIncreasing",
+      // fieldChange: (value) => {
+      //   console.log("---fieldChange---", value);
+      // },
+      // onChange: (e) => {
+      //   console.log("---onchange---", e);
+      // },
+      // children: <Addlist />,
+      templateParam: [
+        {
+          rowParam: { gutter: [20] },
+        },
+      ],
+      template: [
+        { id: "add-str", children: <Input></Input> },
+        // { id: "add-str2", children: <Input></Input> },
+      ],
     },
   ],
 };

@@ -3,6 +3,9 @@ import React, { Fragment } from "react";
 import { ExclamationCircleOutlined } from "@ant-design/icons";
 import composeProps from "rc-util/es/composeProps";
 import { get, isArray, isBool, isObj } from "../../../utils";
+import { namespacePrefix } from "../../../config";
+
+const compSelector = "field-";
 
 function ContaionerTipDes({ text }) {
   return (
@@ -18,13 +21,19 @@ function ContaionerTipDes({ text }) {
  *
  */
 function ContaionerNode({ type = "info", text }) {
-  return text && <span className={`by-input-${type}Node`}>{text}</span>;
+  return (
+    text && (
+      <span className={`${namespacePrefix}${compSelector}${type}Node`}>
+        {text}
+      </span>
+    )
+  );
 }
 
 function ContaionerNodeDes({ type, textNode, textDes }) {
   return (
     (textNode || textDes) && (
-      <span className={`by-input-${type}Contaioner`}>
+      <span className={`${namespacePrefix}${compSelector}${type}Contaioner`}>
         <ContaionerNode type={type} text={textNode}></ContaionerNode>
         <ContaionerTipDes text={textDes}></ContaionerTipDes>
       </span>
@@ -49,7 +58,7 @@ function LabelNode(props) {
 function renderChildren(children, render, props = {}) {
   let { beforeNode, afterNode, beforeDes, afterDes } = props;
   let resultDom = (
-    <div style={{ display: "flex" }}>
+    <div style={{ display: "flex", flexWrap: "wrap" }}>
       <ContaionerNodeDes
         type="Before"
         textNode={beforeNode}
@@ -63,6 +72,7 @@ function renderChildren(children, render, props = {}) {
       ></ContaionerNodeDes>
     </div>
   );
+
   if (typeof render === "function") {
     return render(resultDom);
   }
@@ -96,25 +106,23 @@ function ByFormItemChildren(props) {
   const { trigger, valuePropName } = fieldDecorator;
 
   // composeProps 合并执行 Form.Item 传的 onChange 以及组件本身的方法
-  let childProp = composeProps(
-    children.props,
-    {
-      ...inputParam,
-      "data-id": id,
-      id,
-      ...rest,
-    },
-    true
-  );
+  let childProp = {
+    "data-id": id,
+    id,
+    ...rest,
+    ...inputParam,
+  };
+  // const pickTypeList = ["ByIncreasing", "ByInputGroup"];
 
-  const pickTypeList = ["ByIncreasing", "ByInputGroup"];
-  if (pickTypeList.includes(inputType)) {
-    childProp.fieldChange = fieldChange;
-  }
-
+  // if (pickTypeList.includes(inputType)) {
+  //   childProp.fieldChange = fieldChange;
+  // }
   const eventTrigger = childProp[trigger];
+
   const _children = React.cloneElement(children, {
     ...childProp,
+    ...children.props,
+    // ...composeProps(children.props, childProp),
     [trigger]: (e) => {
       typeof eventTrigger === "function" && eventTrigger(e);
       typeof fieldChange === "function" &&
@@ -134,7 +142,6 @@ function ByFormItemRender(props) {
     label,
     labelAfterDes,
     labelBeforeDes,
-    labelWidth,
     rules = [],
     formItemParam,
     layout,
@@ -144,8 +151,8 @@ function ByFormItemRender(props) {
     ...restProps
   } = props;
   let className = [
-    "by-input-formitem",
-    layout && "by-input-formitem-" + layout,
+    `${namespacePrefix}${compSelector}formitem`,
+    layout && `${namespacePrefix}${compSelector}formitem-` + layout,
   ];
 
   let _children = typeof children === "function" ? children(props) : children;

@@ -1,4 +1,4 @@
-import { ByFieldHoc } from "../../ByField";
+// import { ByFieldHoc } from "../../ByField";
 import ByIncreasing from "./src/ByIncreasing";
 
-export default ByFieldHoc(ByIncreasing);
+export default ByIncreasing;

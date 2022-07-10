@@ -9,10 +9,6 @@ ByUpload.propTypes = {};
  * 默认值
  */
 ByUpload.defaultProps = {};
-// BySelect.defaultProps = {
-//   fieldMapValue: "value",
-//   fieldMapLabel: "label",
-// };
 
 /**
  * 接入表单的参数 getFieldDecorator

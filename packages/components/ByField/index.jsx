@@ -1,4 +1,4 @@
-import ByField, { ByFieldHoc } from "./src";
+import ByField from "./src";
 
 /**
  * Doc
@@ -33,4 +33,4 @@ import ByField, { ByFieldHoc } from "./src";
  */
 
 export default ByField;
-export { ByFieldHoc };
+// export { ByFieldHoc };

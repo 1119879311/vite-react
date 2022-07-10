@@ -1,5 +1,4 @@
 import { Checkbox } from "antd";
-import { ByFieldHoc } from "../../ByField";
 
 const ByCheckbox = Checkbox;
 
@@ -20,4 +19,4 @@ ByCheckbox.FormFieldDecorator = {
   valuePropName: "checked",
 };
 
-export default ByFieldHoc(ByCheckbox);
+export default ByCheckbox;

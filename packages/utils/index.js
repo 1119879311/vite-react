@@ -96,9 +96,9 @@ function isPlainObject(obj) {
  */
 export function shallowMerge(obj1, obj2) {
   var isPlain1 = isPlainObject(obj1);
-  var isPlain2 = isPlainObject(obj2); //只要obj1不是对象，那么不管obj2是不是对象，都用obj2直接替换obj1
-  if (!isPlain1) return obj2; //说明obj1肯定是对象，那如果obj2不是对象，则还是以obj1为主
-  if (!isPlain2) return obj1; //如果上面两个条件都不成立，那说明obj1和obj2肯定都是对象， 则遍历obj2 进行合并
+  var isPlain2 = isPlainObject(obj2);
+  if (!isPlain1) return obj2;
+  if (!isPlain2) return obj1;
   let keys = [...Object.keys(obj2), ...Object.getOwnPropertySymbols(obj2)];
   keys.forEach(function (key) {
     obj1[key] = obj2[key];
@@ -115,19 +115,16 @@ export function shallowMerge(obj1, obj2) {
  * @returns
  */
 export function deepMerge(obj1, obj2, cache) {
-  // cache = !Array.isArray(cache) ? [] : cache;
-  // if (cache.indexOf(obj2)) return obj2;
-  // cache.push(obj2);
   var isPlain1 = isPlainObject(obj1);
-  var isPlain2 = isPlainObject(obj2); //obj1或obj2中只要其中一个不是对象，则按照浅合并的规则进行合并
-  if (!isPlain1 || !isPlain2) return shallowMerge(obj1, obj2); //如果都是对象，则进行每一层级的递归合并
+  var isPlain2 = isPlainObject(obj2); //
+  if (!isPlain1 || !isPlain2) return shallowMerge(obj1, obj2); //
   let keys = [...Object.keys(obj2), ...Object.getOwnPropertySymbols(obj2)];
   keys.forEach(function (key) {
     obj1[key] = deepMerge(obj1[key], obj2[key], cache); //这里递归调用
   });
   return obj1;
 }
-// console.log("--test--deepMerge--", { a: 1 }, { a: 3, c: 12 });
+
 // 多个对象深合拼,不影响原来数据
 export function deepMergeList(...args) {
   let resArr = args.slice();

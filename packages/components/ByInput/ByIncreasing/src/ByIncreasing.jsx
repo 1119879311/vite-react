@@ -1,28 +1,29 @@
 import React from "react";
 import { Form, Input, Button, Space, Select } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import ByForm from "../../../ByForm";
+import { ByFormLayout } from "../../../ByForm";
 
 const ByIncreasing = (props) => {
-  let { form, Template = [], TemplateParam = [], fieldChange, id } = props;
+  let { form, template = [], templateParam = [], fieldChange, id } = props;
   let rid = Array.isArray(id) ? id : [id];
   return (
-    <div>
-      <Form.List name={rid}>
-        {(fields, { add, remove }) => {
-          return (
-            <>
+    <Form.List name={rid}>
+      {(fields, { add, remove }) => {
+        return (
+          <>
+            <Space wrap size={12} style={{ display: "flex" }}>
               {fields.map((field) => (
                 <Space
                   key={field.key}
                   align="baseline"
+                  size={12}
                   style={{ display: "flex" }}
                 >
-                  <ByForm
+                  <ByFormLayout
                     form={form}
                     config={{
-                      FieldListParams: TemplateParam,
-                      FieldList: Template.map((item) => {
+                      FieldListParams: templateParam,
+                      FieldList: template.map((item) => {
                         let cid = Array.isArray(item.id) ? item.id : [item.id];
                         return {
                           ...item,
@@ -30,30 +31,29 @@ const ByIncreasing = (props) => {
                           id: [field.name, ...cid],
                         };
                       }),
-                      onFormChange: (val, childId, allValues) => {
-                        typeof fieldChange === "function" &&
-                          fieldChange(val, [...rid, ...childId], allValues);
-                      },
+                      // onFormChange: (val, childId, allValues) => {
+                      //   typeof fieldChange === "function" &&
+                      //     fieldChange(val, [...rid, ...childId], allValues);
+                      // },
                     }}
-                  ></ByForm>
+                  />
 
                   <MinusCircleOutlined onClick={() => remove(field.name)} />
                 </Space>
               ))}
-
-              <Button
-                type="dashed"
-                onClick={() => add()}
-                block
-                icon={<PlusOutlined />}
-              >
-                Add sights
-              </Button>
-            </>
-          );
-        }}
-      </Form.List>
-    </div>
+            </Space>
+            <Button
+              type="dashed"
+              onClick={() => add()}
+              block
+              icon={<PlusOutlined />}
+            >
+              Add sights
+            </Button>
+          </>
+        );
+      }}
+    </Form.List>
   );
 };
 

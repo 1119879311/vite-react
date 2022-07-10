@@ -1,1 +1,1 @@
-export const namespacePrex = "by-";
+export const namespacePrefix = "by-";

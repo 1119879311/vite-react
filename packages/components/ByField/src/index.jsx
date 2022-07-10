@@ -1,13 +1,4 @@
-import React from "react";
-import ByFormItem from "./ByFormItem";
-import "./index.css";
+import ByField from "./ByFormItem";
+import "./index.less";
 
-export const ByFieldHoc = (Child) => {
-  return (props) => (
-    <ByFormItem {...props}>
-      <Child />
-    </ByFormItem>
-  );
-};
-
-export default ByFormItem;
+export default ByField;

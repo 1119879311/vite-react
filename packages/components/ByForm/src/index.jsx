@@ -1,14 +1,70 @@
 import React, { Component, Fragment, useMemo } from "react";
-import { Row, Col } from "antd";
-import ByInput from "../../ByInput";
+import { Row, Col, Input, Form } from "antd";
+import ByField from "../../ByField";
 import { TramfromGroupFormFieldList } from "./uilt";
-import { debounce, deepMerge, pick, get } from "../../../utils";
-import "./index.css";
+import {
+  debounce,
+  deepMerge,
+  pick,
+  get,
+  isString,
+  isFun,
+} from "../../../utils";
+import "./index.less";
+import { forwardRef } from "react";
+import { useImperativeHandle } from "react";
+import { namespacePrefix } from "../../../config";
 
+const compSelector = "form-";
+
+// 将控件列表提供给外部设置
+class InputList {
+  constructor() {
+    // 控件列表
+    this.control = {};
+    // 控件默认全局参数 Form.item
+    this.controlFormItemParam = {};
+  }
+
+  set(data = {}) {
+    this.control = { ...this.control, ...data };
+  }
+  setParam(data = {}) {
+    this.controlFormItemParam = { ...this.controlFormItemParam, ...data };
+  }
+}
+
+export const inputListInstance = new InputList();
+
+//完全自定义内容，不输入表单控件
 function NoFormItemChildren({ children: Child }) {
   return Child;
 }
 
+// 渲染控件
+function RenderColChild({ children, inputType, formItemParam, ...reseProps }) {
+  let resustChild = children;
+  let ConstomComponent = inputListInstance.control?.[inputType];
+  if (!children && ConstomComponent) {
+    resustChild = isString(ConstomComponent) ? (
+      ConstomComponent
+    ) : (
+      <ConstomComponent />
+    );
+  }
+
+  if (formItemParam) {
+    formItemParam = {
+      ...formItemParam,
+      ...(inputListInstance.controlFormItemParam?.[inputType] || {}),
+    };
+  }
+  return (
+    <ByField {...reseProps} formItemParam={formItemParam} inputType={inputType}>
+      {resustChild}
+    </ByField>
+  );
+}
 /**
  *  渲染一列
  */
@@ -17,27 +73,18 @@ const RenderSingleCol = (props) => {
   let { noFormItem = false, ...fieldProps } = fieldParam;
 
   let className = [
-    "by-form-col-itme",
+    `${namespacePrefix}${compSelector}col-item`,
     colParam.className || "",
-    fieldProps.hidden && "by-form-col-hidden",
+    fieldProps.hidden && `${namespacePrefix}${compSelector}-col-hidden`,
   ]
     .filter(Boolean)
     .join(" ");
   return (
     <Col {...colParam} className={className}>
       {noFormItem ? (
-        <NoFormItemChildren {...fieldProps}></NoFormItemChildren>
+        <NoFormItemChildren {...fieldProps} />
       ) : (
-        <ByInput
-          form={form}
-          {...fieldProps}
-          fieldChange={debounce((...args) => {
-            typeof fieldProps.fieldChange === "function" &&
-              fieldProps.fieldChange(...args);
-            typeof onFormChange === "function" &&
-              onFormChange(...args, form && form?.getFieldsValue());
-          }, 16.67)}
-        ></ByInput>
+        <RenderColChild form={form} {...fieldProps} />
       )}
     </Col>
   );
@@ -84,9 +131,16 @@ function RenderFormCol(props) {
     result.push(<RenderSingleCol {...renderColParam}></RenderSingleCol>);
   });
   let { className, ...otherRowParam } = rowParamCommon;
-  className = ["by-form-row-itme", className || ""].join(" ");
+  // className = [`${namespacePrefix}${compSelector}row-itme`, className || ""].join(" ");
   return result.length ? (
-    <Row {...otherRowParam} className={className} type="flex">
+    <Row
+      {...otherRowParam}
+      className={[
+        `${namespacePrefix}${compSelector}row-itme`,
+        className || "",
+      ].join(" ")}
+      type="flex"
+    >
       {result}
     </Row>
   ) : null;
@@ -142,7 +196,7 @@ function ByFieldListLayout(props) {
   let { FieldList = [], FieldListParams = [], form, ...otherConfig } = props;
   let formGroup = useMemo(
     () => TramfromGroupFormFieldList(FieldList, FieldListParams),
-    [FieldList.length, FieldListParams.length]
+    [FieldList, FieldListParams]
   );
   return (
     <RenderFormGroup
@@ -154,7 +208,8 @@ function ByFieldListLayout(props) {
 }
 
 // 一个完整的表单布局，不涉及数据处理,单纯布局
-class ByForm extends Component {
+
+export class ByFormLayout extends Component {
   renderForm = () => {
     let { config, form } = this.props;
     if (!config) return null;
@@ -175,8 +230,18 @@ class ByForm extends Component {
     return null;
   };
   render() {
-    return <div className="by-form">{this.renderForm()}</div>;
+    return <div className={`${namespacePrefix}form`}>{this.renderForm()}</div>;
   }
 }
 
+const ByForm = forwardRef(({ config, form, ...formParam }, ref) => {
+  const [forms] = Form.useForm(form);
+  //将form 实例 暴露给外面, 提供给类组件中获取
+  useImperativeHandle(ref, () => forms);
+  return (
+    <Form form={forms} {...formParam}>
+      <ByFormLayout config={config} form={form} />
+    </Form>
+  );
+});
 export default ByForm;
