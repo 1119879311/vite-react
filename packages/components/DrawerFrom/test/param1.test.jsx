@@ -1,3 +1,4 @@
+import { Input } from "antd";
 export const param1 = (onclose) => {
   return {
     width: 720,
@@ -54,14 +55,29 @@ export const param1 = (onclose) => {
           id: "add",
           label: "自增",
           inputType: "ByIncreasing",
-          Template: [
+
+          templateParam: [
             {
-              id: "add-str",
-              inputType: "ByString",
-              rules: [{ required: true, message: "Please enter user name" }],
+              rowParam: { gutter: [20] },
             },
           ],
+          template: [
+            { id: "add-str", inputType: "ByString", colParam: { span: 24 } },
+            // { id: "add-str2", children: <Input></Input> },
+          ],
         },
+        // {
+        //   id: "add",
+        //   label: "自增",
+        //   inputType: "ByIncreasing",
+        //   Template: [
+        //     {
+        //       id: "add-str",
+        //       inputType: "ByString",
+        //       rules: [{ required: true, message: "Please enter user name" }],
+        //     },
+        //   ],
+        // },
       ],
     },
     btnsParam: {

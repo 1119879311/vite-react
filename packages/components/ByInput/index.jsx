@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import { Input } from "antd";
 import ByField from "../ByField";
 import ByCheckbox from "./ByCheckbox";
@@ -17,12 +17,14 @@ import BySelect from "./BySelect";
 // };
 
 // const ByString = ByFieldHoc(Input);
-
+const ByInput = forwardRef((props, ref) => {
+  return <Input ref={ref} {...props}></Input>;
+});
 export const byInputList = {
   ByCheckbox,
   ByIncreasing,
   BySelect,
-  ByString: Input,
+  ByString: ByInput,
 };
 
 export default (props) => {

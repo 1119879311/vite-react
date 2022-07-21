@@ -80,6 +80,10 @@ const formOptions = (groupId = "") => ({
   ],
 });
 export default formOptions();
+const Text = (props) => {
+  console.log("--Text--", props);
+  return <div>{props.value}</div>;
+};
 export const GroupFormOptions = {
   onFormChange: (...args) => {
     console.log("onFormChage-formGroup", ...args);
@@ -141,14 +145,19 @@ export const flatFormOtions = {
   FieldList: [
     {
       id: "row-0",
-      label: "row-0",
+      label: "read-row-0",
       inputType: "ByString",
+      defaultValue: 1212,
+      modeType: "read",
+
       // belong: { group: 1, row: 1 }, //[null,0]
     },
     {
       id: "g1-row-0",
       label: "g1-row-0",
-      inputType: "ByString",
+      // inputType: "ByString",
+      defaultValue: 1212,
+      children: <Text></Text>,
       belong: { group: 0, row: 0 }, //[null,0]
     },
     {
@@ -206,13 +215,14 @@ export const flatFormOtions = {
       // maxCount: 0,
       // limtSize: 0.01,
       // listType: "picture-card",
-      listType: "picture",
+      listType: "picture-card",
       multiple: true,
-      children: (
-        <ByUpload>
-          <PlusOutlined />
-        </ByUpload>
-      ),
+      children: <ByUpload />,
+      // children: (
+      //   <ByUpload>
+      //     <PlusOutlined />
+      //   </ByUpload>
+      // ),
     },
     {
       id: "upload",

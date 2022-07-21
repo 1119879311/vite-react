@@ -1,6 +1,6 @@
 import { Drawer, Form } from "antd";
 import ByForm from "../../ByForm";
-import FormBtns from "../../ByForm/src/formBtns";
+import FormAction from "../../ByForm/src/FormAction";
 
 /**
  * 抽屉并表单
@@ -12,7 +12,7 @@ function DrawerForm({ form, formConfig, btnsParam, btnPostion, ...restProps }) {
   const [formPro] = Form.useForm(form);
   const otherProps = {
     [btnPostion ? "extra" : "footer"]: (
-      <FormBtns {...btnsParam} form={formPro} />
+      <FormAction {...btnsParam} form={formPro} />
     ),
   };
   return (

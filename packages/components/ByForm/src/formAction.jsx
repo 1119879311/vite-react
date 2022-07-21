@@ -22,7 +22,7 @@ export const SubmitBtn = ({
     });
   };
   return (
-    <Button {...ohterProps} onClick={onHandle}>
+    <Button type="primary" {...ohterProps} onClick={onHandle}>
       {children}
     </Button>
   );
@@ -52,7 +52,7 @@ const BtnList = {
   reset: ResetBtn,
 };
 
-const FormBtns = ({
+const FormAction = ({
   btns = [],
   inline = false,
   style = {},
@@ -75,4 +75,4 @@ const FormBtns = ({
   );
 };
 
-export default FormBtns;
+export default FormAction;

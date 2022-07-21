@@ -19,6 +19,7 @@ const defaultProps = () => ({
     // 控件 方式三：组
     formOptions: undefined,
   },
+  //其他为Form 参数
 });
 
 ByFormLayout.defaultProps = defaultProps();

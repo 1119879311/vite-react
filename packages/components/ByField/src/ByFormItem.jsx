@@ -4,6 +4,8 @@ import { ExclamationCircleOutlined } from "@ant-design/icons";
 import composeProps from "rc-util/es/composeProps";
 import { get, isArray, isBool, isObj } from "../../../utils";
 import { namespacePrefix } from "../../../config";
+import FieldText from "./FieldText";
+import { useState } from "react";
 
 const compSelector = "field-";
 
@@ -54,9 +56,38 @@ function LabelNode(props) {
   }
   return null;
 }
-
+const modeTypeList = ["read", "edit"];
 function renderChildren(children, render, props = {}) {
-  let { beforeNode, afterNode, beforeDes, afterDes } = props;
+  const {
+    beforeNode,
+    afterNode,
+    beforeDes,
+    afterDes,
+    modeType = "input",
+    isOpenEdit,
+    setIsOpenEdit,
+  } = props;
+  // const [isOpenEdit, setIsOpenEdit] = useState(false);
+
+  const childProp = children?.props || {};
+
+  let resultChild = null;
+  if (modeTypeList.includes(modeType) && !isOpenEdit) {
+    resultChild = (
+      <FieldText
+        modeType={modeType}
+        {...childProp}
+        setIsOpenEdit={setIsOpenEdit}
+      />
+    );
+  } else {
+    resultChild = children;
+  }
+  // const resultChild = modeTypeList.includes(modeType) ? (
+  //   <FieldText modeType={modeType} {...childProp} setOpen={setOpen}/>
+  // ) : (
+  //   children
+  // );
   let resultDom = (
     <div style={{ display: "flex", flexWrap: "wrap" }}>
       <ContaionerNodeDes
@@ -64,7 +95,7 @@ function renderChildren(children, render, props = {}) {
         textNode={beforeNode}
         textDes={beforeDes}
       ></ContaionerNodeDes>
-      {children}
+      {resultChild}
       <ContaionerNodeDes
         type="after"
         textNode={afterNode}
@@ -92,15 +123,20 @@ function ByFormItemChildren(props) {
     inputType,
     inputParam,
     fieldDecorator,
+    modeType = "input", // read,edit,editRead
+    onFormChange,
     ...rest
   } = props;
-
+  const [isOpenEdit, setIsOpenEdit] = useState(false);
   if (!React.isValidElement(children)) {
     return renderChildren(children, render, {
       beforeNode,
       afterNode,
       beforeDes,
       afterDes,
+      modeType,
+      isOpenEdit,
+      setIsOpenEdit,
     });
   }
   const { trigger, valuePropName } = fieldDecorator;
@@ -112,18 +148,18 @@ function ByFormItemChildren(props) {
     ...rest,
     ...inputParam,
   };
-  // const pickTypeList = ["ByIncreasing", "ByInputGroup"];
-
-  // if (pickTypeList.includes(inputType)) {
-  //   childProp.fieldChange = fieldChange;
-  // }
   const eventTrigger = childProp[trigger];
 
   const _children = React.cloneElement(children, {
     ...childProp,
     ...children.props,
+    onBlur: (...args) => {
+      childProp?.onBlur?.(...args);
+      modeTypeList.includes(modeType) && setIsOpenEdit(false);
+    },
     // ...composeProps(children.props, childProp),
     [trigger]: (e) => {
+      onFormChange?.(e.target ? e.target[valuePropName] : e, id);
       typeof eventTrigger === "function" && eventTrigger(e);
       typeof fieldChange === "function" &&
         fieldChange(e.target ? e.target[valuePropName] : e, id);
@@ -134,6 +170,9 @@ function ByFormItemChildren(props) {
     afterNode,
     beforeDes,
     afterDes,
+    modeType,
+    isOpenEdit,
+    setIsOpenEdit,
   });
 }
 

@@ -6,16 +6,29 @@
  * 文件下载
  */
 
-import { Upload } from "antd";
 import { useEffect } from "react";
-import { useState, forwardRef } from "react";
+import { useState, forwardRef, useRef } from "react";
 import { isFun } from "../../../utils";
-import { message } from "antd";
-import { useRef } from "react";
+import { message, Button, Upload } from "antd";
+import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 
 // 单独使用  onChange 事件是 upload 本身的 , 为了兼容, onChange 改为 uploadChange
 // 接入表单from  onChange 事件是表单接管的
+const UploadChildren = ({ children, fileType, loading, listType }) => {
+  if (children) return children;
+  if (listType === "picture-card" || (!listType && fileType === "image")) {
+    return (
+      <div>
+        {loading ? <LoadingOutlined /> : <PlusOutlined />}
+        <div style={{ marginTop: 8 }}>上传</div>
+      </div>
+    );
+  }
 
+  if (fileType === "file" || ["text", "picture"].includes(listType)) {
+    return <Button icon={<UploadOutlined />}>Click to upload</Button>;
+  }
+};
 const ByUpload = forwardRef(
   (
     {
@@ -24,6 +37,9 @@ const ByUpload = forwardRef(
       uploadChange,
       beforeUpload,
       limtSize = 0,
+      fileType = "text",
+      loading,
+      children,
       ...baseProps
     },
     ref
@@ -31,9 +47,9 @@ const ByUpload = forwardRef(
     const [getFileList, setFileList] = useState(fileList);
     const fileNumRef = useRef(fileList.length || 0);
     useEffect(() => {
+      setFileList(fileList);
       if (fileList.length !== getFileList.length) {
         fileNumRef.current = fileList.length;
-        // setFileList(fileList);
       }
     }, [fileList]);
     const uploadConfig = {
@@ -69,7 +85,16 @@ const ByUpload = forwardRef(
       },
       fileList: getFileList,
     };
-    return <Upload ref={ref} {...uploadConfig}></Upload>;
+    return (
+      <Upload ref={ref} {...uploadConfig}>
+        <UploadChildren
+          children={children}
+          fileType={fileType}
+          listType={uploadConfig.listType}
+          loading={loading}
+        ></UploadChildren>
+      </Upload>
+    );
   }
 );
 

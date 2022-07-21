@@ -2,14 +2,7 @@ import React, { Component, Fragment, useMemo } from "react";
 import { Row, Col, Input, Form } from "antd";
 import ByField from "../../ByField";
 import { TramfromGroupFormFieldList } from "./uilt";
-import {
-  debounce,
-  deepMerge,
-  pick,
-  get,
-  isString,
-  isFun,
-} from "../../../utils";
+import { deepMerge, pick, get, isString } from "../../../utils";
 import "./index.less";
 import { forwardRef } from "react";
 import { useImperativeHandle } from "react";
@@ -84,7 +77,11 @@ const RenderSingleCol = (props) => {
       {noFormItem ? (
         <NoFormItemChildren {...fieldProps} />
       ) : (
-        <RenderColChild form={form} {...fieldProps} />
+        <RenderColChild
+          form={form}
+          {...fieldProps}
+          onFormChange={onFormChange}
+        />
       )}
     </Col>
   );
