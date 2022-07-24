@@ -19,17 +19,26 @@ const SearchPanel = () => {
       {
         id: "name",
         inputType: "ByString",
+        modeType: "edit",
+        renderText: (val) => val,
       },
       {
         id: "desc",
+        afterNode: "12",
+        beforeNode: "454",
         inputType: "ByString",
-        rules: [{ required: true }],
+        modeType: "read",
+        defaultValue: 121,
+        renderText: (val) => val,
+        // rules: [{ required: true }],
       },
       {
         id: "datetime",
+        modeType: "edit",
         // inputType: "datetime",
-        children: <DatePicker></DatePicker>,
+        children: <DatePicker ref={refs}></DatePicker>,
         rules: [{ required: true }],
+        renderText: (val) => val?.format?.("YYYY-MM-DD HH:mm:ss"),
       },
       {
         children: (

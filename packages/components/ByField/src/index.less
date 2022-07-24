@@ -54,6 +54,24 @@
   &increasing_addContainer {
     min-width: 120px;
   }
+  &text{
+    display: inline-block;
+    margin-top: 5px;
+  }
+  &text-warp{
+    display: flex;
+    align-items: center;
+   
+    .anticon {
+      opacity: 0;
+    }
+    &:hover{
+      .anticon {
+        opacity: 1;
+        transition: all 0.3s linear;
+      }
+    }
+  }
 }
 
 .ant-col {

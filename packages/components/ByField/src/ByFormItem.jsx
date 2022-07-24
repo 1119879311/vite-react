@@ -1,11 +1,10 @@
-import { Form, Tooltip } from "antd";
+import { Button, Form, Tooltip } from "antd";
 import React, { Fragment } from "react";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { ExclamationCircleOutlined, EditOutlined } from "@ant-design/icons";
 import composeProps from "rc-util/es/composeProps";
 import { get, isArray, isBool, isObj } from "../../../utils";
 import { namespacePrefix } from "../../../config";
-import FieldText from "./FieldText";
-import { useState } from "react";
+import { renderEditChildren } from "./FieldText";
 
 const compSelector = "field-";
 
@@ -56,46 +55,26 @@ function LabelNode(props) {
   }
   return null;
 }
-const modeTypeList = ["read", "edit"];
+
 function renderChildren(children, render, props = {}) {
   const {
     beforeNode,
     afterNode,
     beforeDes,
     afterDes,
-    modeType = "input",
-    isOpenEdit,
-    setIsOpenEdit,
+    modeType,
+    renderText,
+    valuePropName,
   } = props;
-  // const [isOpenEdit, setIsOpenEdit] = useState(false);
 
-  const childProp = children?.props || {};
-
-  let resultChild = null;
-  if (modeTypeList.includes(modeType) && !isOpenEdit) {
-    resultChild = (
-      <FieldText
-        modeType={modeType}
-        {...childProp}
-        setIsOpenEdit={setIsOpenEdit}
-      />
-    );
-  } else {
-    resultChild = children;
-  }
-  // const resultChild = modeTypeList.includes(modeType) ? (
-  //   <FieldText modeType={modeType} {...childProp} setOpen={setOpen}/>
-  // ) : (
-  //   children
-  // );
   let resultDom = (
-    <div style={{ display: "flex", flexWrap: "wrap" }}>
+    <div style={{ display: "flex", alignItems: "center" }}>
       <ContaionerNodeDes
-        type="Before"
+        type="before"
         textNode={beforeNode}
         textDes={beforeDes}
       ></ContaionerNodeDes>
-      {resultChild}
+      {renderEditChildren(children, { modeType, renderText, valuePropName })}
       <ContaionerNodeDes
         type="after"
         textNode={afterNode}
@@ -124,10 +103,12 @@ function ByFormItemChildren(props) {
     inputParam,
     fieldDecorator,
     modeType = "input", // read,edit,editRead
+    renderText,
     onFormChange,
     ...rest
   } = props;
-  const [isOpenEdit, setIsOpenEdit] = useState(false);
+  // const [isOpenEdit, setIsOpenEdit] = useState(false);
+
   if (!React.isValidElement(children)) {
     return renderChildren(children, render, {
       beforeNode,
@@ -135,44 +116,37 @@ function ByFormItemChildren(props) {
       beforeDes,
       afterDes,
       modeType,
-      isOpenEdit,
-      setIsOpenEdit,
+      renderText,
     });
   }
   const { trigger, valuePropName } = fieldDecorator;
-
   // composeProps 合并执行 Form.Item 传的 onChange 以及组件本身的方法
-  let childProp = {
-    "data-id": id,
+  let childrenProp = {
+    "data-formid": id,
     id,
     ...rest,
     ...inputParam,
   };
-  const eventTrigger = childProp[trigger];
-
+  const eventTrigger = childrenProp[trigger];
   const _children = React.cloneElement(children, {
-    ...childProp,
+    ...childrenProp,
     ...children.props,
-    onBlur: (...args) => {
-      childProp?.onBlur?.(...args);
-      modeTypeList.includes(modeType) && setIsOpenEdit(false);
-    },
-    // ...composeProps(children.props, childProp),
     [trigger]: (e) => {
-      onFormChange?.(e.target ? e.target[valuePropName] : e, id);
-      typeof eventTrigger === "function" && eventTrigger(e);
-      typeof fieldChange === "function" &&
-        fieldChange(e.target ? e.target[valuePropName] : e, id);
+      eventTrigger?.(e);
+      const result = e?.target ? e.target[valuePropName] : e;
+      onFormChange?.(result, id);
+      fieldChange?.(result, id);
     },
   });
+
   return renderChildren(_children, render, {
     beforeNode,
     afterNode,
     beforeDes,
     afterDes,
     modeType,
-    isOpenEdit,
-    setIsOpenEdit,
+    renderText,
+    valuePropName,
   });
 }
 
