@@ -15,7 +15,7 @@ function App() {
       <header className="App-header">
         {/* <Prewpdf></Prewpdf> */}
         <TestHooksRequest></TestHooksRequest>
-        {/* <BYDom></BYDom> */}
+        <BYDom></BYDom>
         <SearchPanel></SearchPanel>
         {/* <DatePickerTest></DatePickerTest> */}
         {/* <EchartsTest></EchartsTest> */}

@@ -52,7 +52,7 @@ function TestForm(props) {
       <Button onClick={setVaule}>设置值</Button>
       <Button onClick={clearvalue}>清空值</Button>
       <hr />
-      <Form
+      {/* <Form
         form={form}
         name="form-ref"
         // layout="vertical"
@@ -71,8 +71,7 @@ function TestForm(props) {
       >
         <Form.Item name="nameSs" label="User Name" rules={[{ required: true }]}>
           {isEdit ? <Input></Input> : <ByText></ByText>}
-          {/* {(props) => <div>{props.value}</div>} */}
-          {/* <Input></Input> */}
+  
         </Form.Item>
         <Form.Item
           label="Form disabled"
@@ -102,14 +101,14 @@ function TestForm(props) {
             ) : null;
           }}
         </Form.Item>
-      </Form>
+      </Form> */}
       <br />
 
-      <ByForm ref={formRef} form={form} config={testParam}></ByForm>
+      {/* <ByForm ref={formRef} form={form} config={testParam}></ByForm>
       <br />
       <br />
       <hr></hr>
-      <ByForm form={form} config={GroupFormOptions}></ByForm>
+      <ByForm form={form} config={GroupFormOptions}></ByForm> */}
 
       <hr></hr>
       <ByForm form={form} config={flatFormOtions}></ByForm>

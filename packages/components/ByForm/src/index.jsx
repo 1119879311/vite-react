@@ -2,7 +2,7 @@ import React, { Component, Fragment, useMemo } from "react";
 import { Row, Col, Input, Form } from "antd";
 import ByField from "../../ByField";
 import { TramfromGroupFormFieldList } from "./uilt";
-import { deepMerge, pick, get, isString } from "../../../utils";
+import { deepMerge, pick, get, isString, deepMergeList } from "../../../utils";
 import "./index.less";
 import { forwardRef } from "react";
 import { useImperativeHandle } from "react";
@@ -53,7 +53,7 @@ function RenderColChild({ children, inputType, formItemParam, ...reseProps }) {
     };
   }
   return (
-    <ByField {...reseProps} formItemParam={formItemParam} inputType={inputType}>
+    <ByField {...reseProps} formItemParam={formItemParam} inputtype={inputType}>
       {resustChild}
     </ByField>
   );
@@ -104,7 +104,7 @@ function RenderFormCol(props) {
   FieldList.forEach((inputField, index) => {
     let { colParam = {}, inline, belong, ...fieldParam } = inputField;
     let renderColParam = {
-      colParam: deepMerge({ ...colParamCommon }, colParam),
+      colParam: { ...colParamCommon, ...colParam }, //deepMerge({ ...colParamCommon }, colParam),
       fieldParam,
       form: props.form,
       onFormChange,

@@ -100,48 +100,48 @@ export const flatFormOtions = {
   onFormChange: (...args) => {
     console.log("onFormChage-FieldList", ...args);
   },
-  // rowParam: { gutter: [40] },
-  // colParam: { style: { width: "240px" } },
-  colParam: { span: 24 },
-  column: 0, // 这里配置列的
-  FieldListParams: [
-    // 这是每一组的参数u
-    {
-      // rowParam: { gutter: [40] },
-      // colParam: { style: { width: "240px" } },
-      // column: 2, // 这里配置列的
-      belongRowParam: [
-        //这是一行的配置参数
-        {
-          rowParam: {},
-          // column: 2, // 这里配置列的
-          colParam: {},
-        },
-      ],
-    },
-    {
-      // belongGroud:null
-      title: "分组二",
-      belongRowParam: [
-        {
-          rowParam: {},
-          // column: 3, // 这里配置列的
-          colParam: {},
-        },
-      ],
-    },
-    {
-      // belongGroud:null
-      title: "分组三",
-      belongRowParam: [
-        {
-          rowParam: {},
-          column: 3, // 这里配置列的
-          colParam: {},
-        },
-      ],
-    },
-  ],
+  rowParam: { gutter: [20, 40] },
+  colParam: { style: { width: "240px" } },
+  // colParam: { span: 24 },
+  // column: 3, // 这里配置列的
+  // FieldListParams: [
+  //   // 这是每一组的参数u
+  //   {
+  //     // rowParam: { gutter: [40] },
+  //     // colParam: { style: { width: "240px" } },
+  //     // column: 2, // 这里配置列的
+  //     belongRowParam: [
+  //       //这是一行的配置参数
+  //       {
+  //         rowParam: {},
+  //         // column: 2, // 这里配置列的
+  //         colParam: {},
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     // belongGroud:null
+  //     title: "分组二",
+  //     belongRowParam: [
+  //       {
+  //         rowParam: {},
+  //         // column: 3, // 这里配置列的
+  //         colParam: {},
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     // belongGroud:null
+  //     title: "分组三",
+  //     belongRowParam: [
+  //       {
+  //         rowParam: {},
+  //         column: 3, // 这里配置列的
+  //         colParam: {},
+  //       },
+  //     ],
+  //   },
+  // ],
   FieldList: [
     {
       id: "row-0",
@@ -158,24 +158,24 @@ export const flatFormOtions = {
       // inputType: "ByString",
       defaultValue: 1212,
       children: <Text></Text>,
-      belong: { group: 0, row: 0 }, //[null,0]
+      // belong: { group: 0, row: 0 }, //[null,0]
     },
     {
       id: "g1-row-1",
       label: "g1-row-1",
-      belong: { group: 0, row: 1 }, //[null,0]
+      // belong: { group: 0, row: 1 }, //[null,0]
     },
     {
       id: "g2-row-0",
       label: "g2-row-0",
       inputType: "ByString",
-      belong: { group: 1, row: 0 }, //[null,0]
+      // belong: { group: 1, row: 0 }, //[null,0]
     },
     {
       id: "g2-row-1",
       label: "g2-row-1",
       inputType: "ByString",
-      belong: { group: 1, row: 0 }, //[null,0]
+      // belong: { group: 1, row: 0 }, //[null,0]
     },
     {
       id: "row-1",
@@ -217,6 +217,9 @@ export const flatFormOtions = {
       // listType: "picture-card",
       listType: "picture-card",
       multiple: true,
+      inputParam: {
+        children: "1444421212",
+      },
       children: <ByUpload />,
       // children: (
       //   <ByUpload>
@@ -271,14 +274,14 @@ export const flatFormOtions = {
           <Button icon={<UploadOutlined />}>Click to upload</Button>
         </Upload>
       ),
-      belong: { group: 1, row: 1 },
+      // belong: { group: 1, row: 1 },
     },
     {
-      inline: true,
+      // inline: true,
       noFormItem: true,
-      // style: { color: "red" },
+      style: { color: "red" },
       children: <div>标题</div>,
-      belong: { group: 1, row: 0 },
+      // belong: { group: 1, row: 0 },
     },
     {
       // colParam: { style: { width: "240px" } },
@@ -289,7 +292,7 @@ export const flatFormOtions = {
       },
       label: "提交",
       children: <Button>提交</Button>,
-      belong: { group: 1, row: 1 },
+      // belong: { group: 1, row: 1 },
       layout: "vertical",
     },
     {
@@ -298,6 +301,7 @@ export const flatFormOtions = {
       // noInsertForm: true,
       // noFormItem: true,
       // formItemParam: { noStyle: true },
+      colParam: { span: 24 },
       inputType: "ByIncreasing",
       // fieldChange: (value) => {
       //   console.log("---fieldChange---", value);
@@ -311,9 +315,10 @@ export const flatFormOtions = {
           rowParam: { gutter: [20] },
         },
       ],
+      // inline: true,
       template: [
         { id: "add-str", children: <Input></Input> },
-        // { id: "add-str2", children: <Input></Input> },
+        { id: "add-str2", children: <Input></Input> },
       ],
     },
   ],
